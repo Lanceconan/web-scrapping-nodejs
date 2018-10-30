@@ -1,7 +1,7 @@
 /**
- * Fuente: https://dev.to/aurelkurtula/introduction-to-web-scraping-with-nodejs-9h2
- * Este código extrae textos sobre la página dev.to, se siguío el código como tutorial
- *  
+ *     
+ * Este código sacará en bruto la información del sitio de noticias chilenius, obteniendo título, link, fecha, autor y cantidad de comentarios.
+ * 
  * */
 
 let request = require('request');
@@ -9,27 +9,27 @@ let axios = require('axios');
 let cheerio = require('cheerio');
 let fs = require('fs');
 
-axios.get('https://dev.to/aurelkurtula')
+axios.get('http://chilenius.cl/')
     .then((response) => {
         if (response.status === 200) {
             const html = response.data;
             const $ = cheerio.load(html);
-            var devtoList = [];
+            var infoChileNius = [];
             $('.single-article').each(function(i, elem) {
-                devtoList[i] = {
-                    title: $(this).find('h3').text().trim(),
-                    url: $(this).children('.highlights-featured-image').attr('href'),
-                    tags: $(this).find('.tags').text().split('#')
-                        .map(tag => tag.trim())
-                        .filter(function(n) { return n != "" })
+                infoChileNius[i] = {
+                    titulo: $(this).find('h3').text().trim(),
+                    link: $(this).find('a').attr('href'),
+                    fecha: $(this).find('time').attr('datetime').toString(),
+                    autor: $(this).find('span.author').find('a').attr('title'),
+                    comentarios: $(this).find('span.comments').find('a').text()
                 }
             });
         }
 
         fs.writeFile(
-            'json-info-articulos.json',
+            'info-chilenus.json',
             JSON.stringify(
-                devtoList.filter(n => n != undefined),
+                infoChileNius.filter(n => n != undefined),
                 null,
                 4
             ),

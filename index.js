@@ -1,3 +1,7 @@
+/**
+ * Este código extrae imagenes desde el enlace de entrada
+ */
+
 const request = require('request');
 const cheerio = require('cheerio');
 const fs = require('fs');
