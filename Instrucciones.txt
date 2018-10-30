@@ -1,0 +1,7 @@
+Para ignorar los módulos:
+
+touch .gitignore && echo "node_modules/" >> .gitignore
+
+o
+
+git rm -r --cached node_modules && touch .gitignore && echo "node_modules/" >> .gitignore
